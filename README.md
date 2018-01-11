@@ -7,4 +7,4 @@ untuk database SQl nya bisa lihat di folder Databases SQL Lazada
 
 Jika tertarik atau bingung bisa Email ke antasuy@gmail.com
 
-Terima Kasih semoga ilmunya bermanfaat
+Terima Kasih, semoga ilmunya bermanfaat
