@@ -1,2 +1,4 @@
 # Tubes-PBO-Lazada.co-id
 repo tugas besar semester 3 matkul PBO tentang simulasi databases Lazada.co.id menggunakan Java
+
+script bisa dilihat di folder Tubes-PBO_Lazada.co.id/LAZADA-COID/build/classes/lazada/coid
