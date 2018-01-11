@@ -124,6 +124,7 @@ public class TryTampil {
             System.out.println("");
             
             //extract data from result set
+            int index = 1;
             while(rs.next()){
                 //retrieve column name
                 int Id_produk      = rs.getInt("Id_produk");
@@ -133,9 +134,11 @@ public class TryTampil {
                 
                 //display value
                 //System.out.println("Id produk \t = " +Id_produk);
+                System.out.println("Index = " + index);
                 System.out.println("Nama Produk \t = " +Nama_produk);
                 System.out.println("Harga \t\t = " +Harga);
                 System.out.println("");
+                index += 1;
             }
             
             System.out.println("");
