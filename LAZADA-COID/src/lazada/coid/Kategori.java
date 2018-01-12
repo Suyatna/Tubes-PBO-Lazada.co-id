@@ -8,6 +8,7 @@ package lazada.coid;
 import java.util.Scanner;
 import java.io.IOException;
 import java.sql.*;
+import java.util.LinkedList;
 
 /**
  *
@@ -181,7 +182,6 @@ public class Kategori {
             System.out.println("");
             System.out.println("Klik Enter untuk kembali ke menu");
             System.out.println("Ketik nomor untuk melihat barang : ");
-            System.out.println("");
             
             //enter checker
             Scanner plh = new Scanner(System.in);       
@@ -248,7 +248,6 @@ public class Kategori {
             System.out.println("");
             System.out.println("Klik Enter untuk kembali ke menu");
             System.out.println("Ketik nomor untuk melihat barang : ");
-            System.out.println("");
             
             //enter checker
             Scanner plh = new Scanner(System.in);       
@@ -266,7 +265,93 @@ public class Kategori {
         } 
         catch(ClassNotFoundException e)
         {
-                System.out.println("JDBC Driver not found");
+            System.out.println("JDBC Driver not found");
+        }
+    }
+    
+    public void SemuaProduk() throws IOException, InterruptedException{
+        Connection conn = null;
+        Statement stmt = null;
+        
+        String Pilih;
+        
+        try {
+            //register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            //open a connection
+            System.out.println("connecting to database...");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            
+            //execute a query
+            System.out.println("creating statement...");
+            System.out.println("please turn off your anti-virus...");
+            System.out.println("");
+            
+            stmt = conn.createStatement();
+            String sql;
+            sql = "SELECT * FROM produk";
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            System.out.println("");
+            
+            //extract data from result set
+            int index = 1;
+            
+            //using linked list to stored data Id_produk
+            LinkedList<Integer> Id_list = new LinkedList<Integer>();
+            
+            while(rs.next()){
+                //retrieve column name
+                int Id_produk      = rs.getInt("Id_produk");
+                String Nama_produk = rs.getString("Nama_produk");
+                String Harga       = rs.getString("Harga");
+                String Id_cate     = rs.getString("Id_cate");          
+                
+                Id_list.add(Id_produk);
+                
+                //display value
+                //System.out.println("Id produk \t = " +Id_produk);
+                System.out.println("Index = " + index);
+                System.out.println("Nama Produk \t = " +Nama_produk);
+                System.out.println("Harga \t\t = " +Harga);
+                System.out.println("");
+                index += 1;
+            }
+            
+            System.out.println("");
+            System.out.println("Klik Enter untuk kembali ke menu");
+            System.out.print("Ketik nomor untuk melihat barang : ");
+            
+            //enter checker
+            Scanner plh = new Scanner(System.in);
+            Pilih = plh.nextLine();
+            
+            if(Pilih.equals("")){
+                conn.close();
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                Pelanggan plg = new Pelanggan();
+                plg.CariBarang("");
+            }
+            else
+                if (Integer.valueOf(Pilih) < Id_list.size()){
+                    conn.close();
+                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    Produk prd = new Produk();
+                    prd.TampilProduk(Id_list.get(Integer.valueOf(Pilih) - 1), "");
+                }
+                else 
+                {
+                    System.out.println("");
+                    System.out.println("Indeks yang dipilih lebih dari " +Id_list.size() +" barang yang ada!");
+                }
+                
+     
+        } catch (SQLException e) {
+            System.out.println("Failed " + e.toString());
+        }
+        catch(ClassNotFoundException e){
+            System.out.println("JDBC Driver not found");
         }
     }
 }
