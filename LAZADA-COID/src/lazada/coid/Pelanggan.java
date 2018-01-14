@@ -27,15 +27,23 @@ public class Pelanggan {
     public String email;
     public String password;
     public String id_pel;
-    
+    public String Nama_pel;
+            
     //repo untuk Id_produk agar bisa digunakan di class lain
     public int Count;
-    public String Id_produk;
     
-    public void Pembeli(String attention) throws IOException, InterruptedException{
+    public int Repo_IdProduk;
+    
+    public int Id_Produk;
+    public String Nama_produk;
+    public int Harga;
+    
+    public void Pembeli(String attention, int Id_pro) throws IOException, InterruptedException{
        
     String Pilih;
         
+    Repo_IdProduk = Id_pro;
+    
     System.out.println("Pembeli : ");
     System.out.println("1. Masuk");
     System.out.println("2. Daftar");
@@ -55,7 +63,7 @@ public class Pelanggan {
     if(Pilih.equals("")){
         new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
         String strTemp = "Tolong isi pilihannya";
-        Pembeli(strTemp);
+        Pembeli(strTemp, Id_pro);
     }
     else
         if(Pilih.equals("1")){
@@ -123,6 +131,11 @@ public class Pelanggan {
         password = pass.nextLine(); 
         
         Pesanan ps = new Pesanan();
+        Produk pr = new Produk();
+        
+        int jmlh;
+        
+        String Pilih;
         
         try {
             //register JDBC driver
@@ -137,16 +150,18 @@ public class Pelanggan {
             System.out.println("please turn off your anti-virus...");
             System.out.println("");
             
+            
+            //cari Id_pelanggan
             stmt = conn.createStatement();
             String sql;
             sql = "SELECT * FROM pelanggan WHERE Email = '" +email+ "' AND Pass = '" +password+ "'";
             ResultSet rs = stmt.executeQuery(sql);
                         
             if(rs.next()){
+                Nama_pel        = rs.getString("Nama_pel");
                 String email_db = rs.getString("Email");
                 String pass_db  = rs.getString("Pass");                
                 id_pel          = rs.getString("Id_pel");
-                ps._IdPel = id_pel;
                 
                 System.out.println(id_pel);
                 
@@ -154,9 +169,10 @@ public class Pelanggan {
             else
                 {
                     new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();   
-                    Pembeli("Maaf anda belum terdaftar");
+                    Pembeli("Maaf anda belum terdaftar", Repo_IdProduk);
                 }
             
+            //cari jumlah Id_pesanan yang telah terbentuk
             stmt = conn.createStatement();
             sql = "SELECT COUNT(*) FROM pesanan";
             rs = stmt.executeQuery(sql);
@@ -165,13 +181,117 @@ public class Pelanggan {
             if(rs.next()){
                 //retrieve column name                
                 Count = rs.getInt("count(*)");
-                ps.amount = Count + 1;
+                //ps.amount = Count + 1;
+                Count = Count + 1;
+                
                 //display value
-                //System.out.println(Count);
+                System.out.println(Count);
             }
             
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();   
-            ps.Pesan("");
+            //tanya berapa yang dibeli
+            Scanner sc = new Scanner(System.in);
+            System.out.print("Berapa jumlah yang akan dibeli?: ");
+            jmlh = sc.nextInt();
+            
+            System.out.println(Count);
+            System.out.println(id_pel);
+            System.out.println(jmlh);
+            System.out.println("");
+            
+            stmt = conn.createStatement();
+            sql = "INSERT INTO pesanan " + "VALUE (" +Count+", '" +id_pel+ "' ," +jmlh+ " , CURRENT_TIMESTAMP )";
+            stmt.executeUpdate(sql);
+            
+            //update Id_pesanan pada tabel pesanan_produk_retail sesuai dengan Id_produk
+            stmt = conn.createStatement();
+            sql = "UPDATE pesanan_produk_retail " +
+                    "SET Id_pesan = " +Count+ " WHERE Id_produk = " +Repo_IdProduk;
+            stmt.executeUpdate(sql);
+            
+            //check id produk
+            stmt = conn.createStatement();
+            sql = "SELECT * FROM produk WHERE Id_produk = " + Repo_IdProduk;
+            rs = stmt.executeQuery(sql);
+            
+            //extract data from result set
+            int index = 1;
+            while(rs.next()){
+                //retrieve column name
+                Id_Produk    = rs.getInt("Id_produk");
+                Nama_produk = rs.getString("Nama_produk");
+                Harga       = rs.getInt("Harga");
+                
+                //display value
+                
+            }
+            
+            System.out.println("Id Pesanan     : " +Count);
+            System.out.println("Id Pelanggan   : " +id_pel);
+            System.out.println("Nama Pelanggan : " +Nama_pel);
+            System.out.println("Id Produk      : " +Repo_IdProduk);
+            System.out.println("Nama Produk    : " +Nama_produk);
+            System.out.println("Jumlah Barang  : " +jmlh);
+            System.out.println("");
+            System.out.println("Total Harga    : " +jmlh*Harga);
+            System.out.println("");
+                      
+            //enter checker
+            Scanner plh = new Scanner(System.in);
+            System.out.print("Apakah anda ingin belanja lagi? (y/n) : ");
+            Pilih = plh.nextLine();
+
+            System.out.println("");
+            
+            if(Pilih.equals("")){
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                Jawaban();
+            }else
+                if(Pilih.equals("y")){
+                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    CariBarang("");
+                }else        
+                    conn.close();
+            
+    } catch (SQLException e)
+        {
+            System.out.println("Failed " + e.toString());
+        } 
+        catch(ClassNotFoundException e)
+        {
+                System.out.println("JDBC Driver not found");
+        }
+    }
+    
+    public void Jawaban() throws IOException, InterruptedException{
+        Connection conn = null;
+        Statement stmt = null;
+        
+        String Pilih;
+        
+        try {
+            //register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            //open a connection
+            //System.out.println("connecting to database...");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            
+            System.out.println("Tolong masukan keyword : ");
+        
+            //enter checker
+            Scanner plh = new Scanner(System.in);
+            System.out.print("Apakah anda ingin belanja lagi? (y/n) : ");
+            Pilih = plh.nextLine();
+        
+            if(Pilih.equals("")){
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                Jawaban();
+            }else
+                if(Pilih.equals("y")){
+                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    CariBarang("");
+                }else        
+                    conn.close();
             
     } catch (SQLException e)
         {

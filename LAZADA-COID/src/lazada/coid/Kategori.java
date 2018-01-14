@@ -24,6 +24,10 @@ public class Kategori {
     static final String USER = "root";
     static final String PASS = "";
     
+    public int Id_produk;
+    public String Nama_produk;
+    public int Harga_produk;
+    
     public void TampilKategori(String attention) throws IOException, InterruptedException{
         String Pilih;
         
@@ -91,17 +95,26 @@ public class Kategori {
             
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT Id_cate, Nama_produk, Harga FROM produk WHERE Id_cate = 01";
+            sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, produk.`Id_cate`, pesanan_produk_retail.`Id_pesan`\n" +
+                  "FROM produk\n" +
+                  "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
+                  "WHERE pesanan_produk_retail.`Id_pesan` IS NULL AND produk.`Id_cate` = 01;";
             ResultSet rs = stmt.executeQuery(sql);
             
             //extract data from result set
             int index = 1;
+            
+            //using linked list to stored data Id_produk
+            LinkedList<Integer> Id_list = new LinkedList<Integer>();
+            
             while(rs.next()){
                 //retrieve column name
-                //int Id_produk      = rs.getInt("Id_produk");
+                Id_produk      = rs.getInt("Id_produk");
                 String Nama_produk = rs.getString("Nama_produk");
                 String Harga       = rs.getString("Harga");
                 //String Id_cate     = rs.getString("Id_cate");
+                
+                Id_list.add(Id_produk);
                 
                 //display value
                 //System.out.println("Id produk \t = " +Id_produk);
@@ -125,7 +138,18 @@ public class Kategori {
                 conn.close();
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
                 TampilKategori("");
-            }
+            }else
+                if ((Integer.valueOf(Pilih) - 1) < Id_list.size()){
+                    conn.close();
+                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    Produk prd = new Produk();
+                    prd.TampilProduk(Id_list.get(Integer.valueOf(Pilih) - 1), "");
+                }
+                else 
+                {
+                    System.out.println("");
+                    System.out.println("Indeks yang dipilih lebih dari " +Id_list.size() +" barang yang ada!");
+                }
             
     } catch (SQLException e)
         {
@@ -158,17 +182,26 @@ public class Kategori {
             
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT Id_cate, Nama_produk, Harga FROM produk WHERE Id_cate = 02";
+            sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, produk.`Id_cate`, pesanan_produk_retail.`Id_pesan`\n" +
+                  "FROM produk\n" +
+                  "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
+                  "WHERE pesanan_produk_retail.`Id_pesan` IS NULL AND produk.`Id_cate` = 02;";
             ResultSet rs = stmt.executeQuery(sql);
             
             //extract data from result set
             int index = 1;
+            
+            //using linked list to stored data Id_produk
+            LinkedList<Integer> Id_list = new LinkedList<Integer>();
+            
             while(rs.next()){
                 //retrieve column name
-                //int Id_produk      = rs.getInt("Id_produk");
+                int Id_produk      = rs.getInt("Id_produk");
                 String Nama_produk = rs.getString("Nama_produk");
                 String Harga       = rs.getString("Harga");
                 //String Id_cate     = rs.getString("Id_cate");
+                
+                Id_list.add(Id_produk);
                 
                 //display value
                 //System.out.println("Id produk \t = " +Id_produk);
@@ -191,7 +224,18 @@ public class Kategori {
                 conn.close();
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
                 TampilKategori("");
-            }
+            }else
+                if ((Integer.valueOf(Pilih) - 1) < Id_list.size()){
+                    conn.close();
+                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    Produk prd = new Produk();
+                    prd.TampilProduk(Id_list.get(Integer.valueOf(Pilih) - 1), "");
+                }
+                else 
+                {
+                    System.out.println("");
+                    System.out.println("Indeks yang dipilih lebih dari " +Id_list.size() +" barang yang ada!");
+                }
             
     } catch (SQLException e)
         {
@@ -224,17 +268,26 @@ public class Kategori {
             
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT Id_cate, Nama_produk, Harga FROM produk WHERE Id_cate = 03";
+            sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, produk.`Id_cate`, pesanan_produk_retail.`Id_pesan`\n" +
+                  "FROM produk\n" +
+                  "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
+                  "WHERE pesanan_produk_retail.`Id_pesan` IS NULL AND produk.`Id_cate` = 03;";
             ResultSet rs = stmt.executeQuery(sql);
             
             //extract data from result set
             int index = 1;
+            
+            //using linked list to stored data Id_produk
+            LinkedList<Integer> Id_list = new LinkedList<Integer>();
+            
             while(rs.next()){
                 //retrieve column name
-                //int Id_produk      = rs.getInt("Id_produk");
+                int Id_produk      = rs.getInt("Id_produk");
                 String Nama_produk = rs.getString("Nama_produk");
                 String Harga       = rs.getString("Harga");
                 //String Id_cate     = rs.getString("Id_cate");
+                
+                Id_list.add(Id_produk);
                 
                 //display value
                 //System.out.println("Id produk \t = " +Id_produk);
@@ -257,7 +310,18 @@ public class Kategori {
                 conn.close();
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
                 TampilKategori("");
-            }
+            }else
+                if ((Integer.valueOf(Pilih) - 1) < Id_list.size()){
+                    conn.close();
+                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    Produk prd = new Produk();
+                    prd.TampilProduk(Id_list.get(Integer.valueOf(Pilih) - 1), "");
+                }
+                else 
+                {
+                    System.out.println("");
+                    System.out.println("Indeks yang dipilih lebih dari " +Id_list.size() +" barang yang ada!");
+                }
             
     } catch (SQLException e)
         {
@@ -268,6 +332,92 @@ public class Kategori {
             System.out.println("JDBC Driver not found");
         }
     }
+    
+    public void altjk() throws IOException, InterruptedException{
+        Connection conn = null;
+        Statement stmt = null;
+        
+        String Pilih;
+        
+        try {
+            //register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            //open a connection
+            System.out.println("connecting to database...");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            
+            //execute a query
+            System.out.println("creating statement...");
+            System.out.println("please turn off your anti-virus...");
+            
+            stmt = conn.createStatement();
+            String sql;
+            sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, produk.`Id_cate`, pesanan_produk_retail.`Id_pesan`\n" +
+                  "FROM produk\n" +
+                  "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
+                  "WHERE pesanan_produk_retail.`Id_pesan` IS NULL AND produk.`Id_cate` = 04;";
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            //extract data from result set
+            int index = 1;
+            
+            //using linked list to stored data Id_produk
+            LinkedList<Integer> Id_list = new LinkedList<Integer>();
+            
+            while(rs.next()){
+                //retrieve column name
+                int Id_produk      = rs.getInt("Id_produk");
+                String Nama_produk = rs.getString("Nama_produk");
+                String Harga       = rs.getString("Harga");
+                //String Id_cate     = rs.getString("Id_cate");
+                
+                Id_list.add(Id_produk);
+                
+                //display value
+                //System.out.println("Id produk \t = " +Id_produk);
+                System.out.println("Index = " + index);
+                System.out.println("Nama Produk \t = " +Nama_produk);
+                System.out.println("Harga \t\t = " +Harga);
+                System.out.println("");
+                index += 1;
+            }
+            
+            System.out.println("");
+            System.out.println("Klik Enter untuk kembali ke menu");
+            System.out.println("Ketik nomor untuk melihat barang : ");
+            
+            //enter checker
+            Scanner plh = new Scanner(System.in);       
+            Pilih = plh.nextLine();
+            
+            if(Pilih.equals("")){
+                conn.close();
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                TampilKategori("");
+            }else
+                if ((Integer.valueOf(Pilih) - 1) < Id_list.size()){
+                    conn.close();
+                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    Produk prd = new Produk();
+                    prd.TampilProduk(Id_list.get(Integer.valueOf(Pilih) - 1), "");
+                }
+                else 
+                {
+                    System.out.println("");
+                    System.out.println("Indeks yang dipilih lebih dari " +Id_list.size() +" barang yang ada!");
+                }
+            
+    } catch (SQLException e)
+        {
+            System.out.println("Failed " + e.toString());
+        } 
+        catch(ClassNotFoundException e)
+        {
+            System.out.println("JDBC Driver not found");
+        }
+    }
+    
     
     public void SemuaProduk() throws IOException, InterruptedException{
         Connection conn = null;
@@ -290,7 +440,10 @@ public class Kategori {
             
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT * FROM produk";
+            sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, pesanan_produk_retail.`Id_pesan`\n" +
+                  "FROM produk\n" +
+                  "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
+                  "WHERE pesanan_produk_retail.`Id_pesan` IS NULL;";
             ResultSet rs = stmt.executeQuery(sql);
             
             System.out.println("");
@@ -303,10 +456,9 @@ public class Kategori {
             
             while(rs.next()){
                 //retrieve column name
-                int Id_produk      = rs.getInt("Id_produk");
-                String Nama_produk = rs.getString("Nama_produk");
-                String Harga       = rs.getString("Harga");
-                String Id_cate     = rs.getString("Id_cate");          
+                Id_produk      = rs.getInt("Id_produk");
+                Nama_produk    = rs.getString("Nama_produk");
+                Harga_produk   = rs.getInt("Harga");
                 
                 Id_list.add(Id_produk);
                 
@@ -314,7 +466,7 @@ public class Kategori {
                 //System.out.println("Id produk \t = " +Id_produk);
                 System.out.println("Index = " + index);
                 System.out.println("Nama Produk \t = " +Nama_produk);
-                System.out.println("Harga \t\t = " +Harga);
+                System.out.println("Harga \t\t = " +Harga_produk);
                 System.out.println("");
                 index += 1;
             }
@@ -334,7 +486,7 @@ public class Kategori {
                 plg.CariBarang("");
             }
             else
-                if (Integer.valueOf(Pilih) < Id_list.size()){
+                if ((Integer.valueOf(Pilih) - 1) < Id_list.size()){
                     conn.close();
                     new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
                     Produk prd = new Produk();

@@ -26,10 +26,17 @@ public class Produk {
     //repo untuk Id_produk agar bisa digunakan di class lain
     public int Count;
     public String Id_produk;
+    public String Nama_produk;
+    public int Harga;
+    
+    //repo Id_pro
+    public int repo_IdPro;
     
     public void TampilProduk(int Id_pro, String attention) throws IOException, InterruptedException{
         Connection conn = null;
         Statement stmt = null;
+        
+        repo_IdPro = Id_pro;
         
         String Pilih;
         
@@ -55,8 +62,8 @@ public class Produk {
             while(rs.next()){
                 //retrieve column name
                 Id_produk   = rs.getString("Id_produk");
-                String Nama_produk = rs.getString("Nama_produk");
-                String Harga       = rs.getString("Harga");
+                Nama_produk = rs.getString("Nama_produk");
+                Harga       = rs.getInt("Harga");
                 
                 //display value
                 System.out.println("Id produk \t = " +Id_produk);
@@ -86,7 +93,7 @@ public class Produk {
             }
             else
                 if(Pilih.equals("beli")){                   
-                    conn.close();
+                    //conn.close();
                     new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
                     Beli("");
                 }
@@ -109,6 +116,6 @@ public class Produk {
     public void Beli(String attention) throws IOException, InterruptedException{
         Pelanggan pl = new  Pelanggan();
         new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        pl.Pembeli("");         
+        pl.Pembeli("", repo_IdPro);         
     }
 }
