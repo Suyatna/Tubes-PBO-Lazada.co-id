@@ -8,6 +8,7 @@ package lazada.coid;
 import java.util.Scanner;
 import java.io.IOException;
 import java.sql.*;
+import java.util.LinkedList;
 
 /**
  *
@@ -31,12 +32,20 @@ public class Pelanggan {
             
     //repo untuk Id_produk agar bisa digunakan di class lain
     public int Count;
-    
     public int Repo_IdProduk;
-    
     public int Id_Produk;
     public String Nama_produk;
     public int Harga;
+    public int jmlh;
+    
+    //repo bank
+    public int Jmlh_Id_pay;
+    public String Kode_bank;
+    public String Nama_bank;
+    
+    //repo rekening
+    public String No_rek;
+    public String Atas_nama;
     
     public void Pembeli(String attention, int Id_pro) throws IOException, InterruptedException{
        
@@ -130,10 +139,7 @@ public class Pelanggan {
         System.out.print("Password \t: ");
         password = pass.nextLine(); 
         
-        Pesanan ps = new Pesanan();
         Produk pr = new Produk();
-        
-        int jmlh;
         
         String Pilih;
         
@@ -232,9 +238,14 @@ public class Pelanggan {
             System.out.println("Nama Produk    : " +Nama_produk);
             System.out.println("Jumlah Barang  : " +jmlh);
             System.out.println("");
-            System.out.println("Total Harga    : " +jmlh*Harga);
-            System.out.println("");
-                      
+            //System.out.println("Total Harga    : " +jmlh*Harga);
+            //System.out.println("");
+             
+            //lanjutkan ke pembayaran
+            //new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            Pembayaran("");
+ 
+            /*
             //enter checker
             Scanner plh = new Scanner(System.in);
             System.out.print("Apakah anda ingin belanja lagi? (y/n) : ");
@@ -251,6 +262,7 @@ public class Pelanggan {
                     CariBarang("");
                 }else        
                     conn.close();
+            */
             
     } catch (SQLException e)
         {
@@ -292,6 +304,113 @@ public class Pelanggan {
                     CariBarang("");
                 }else        
                     conn.close();
+            
+    } catch (SQLException e)
+        {
+            System.out.println("Failed " + e.toString());
+        } 
+        catch(ClassNotFoundException e)
+        {
+                System.out.println("JDBC Driver not found");
+        }
+    }
+    
+    public void Pembayaran(String attention) throws IOException, InterruptedException{
+        Connection conn = null;
+        Statement stmt = null;
+        
+        String Pilih;
+        
+        try {
+            //register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            //open a connection
+            //System.out.println("connecting to database...");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            
+            //gunakan linked list untuk menyimpan indeks = Kode_bank pada table Bank
+            LinkedList<String> Id_list = new LinkedList<String>();
+            
+            stmt = conn.createStatement();
+            String sql;
+            sql = "SELECT * FROM bank";
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            int indeks = 1;
+            while(rs.next()){
+               Kode_bank = rs.getString("Kode_bank");
+               Nama_bank = rs.getString("Nama_bank");
+               Id_list.add(Kode_bank);
+               
+                System.out.println(indeks+ ". " +Nama_bank+ ", Kode bank = " +Kode_bank);
+                indeks++;
+            }
+            
+            System.out.println(attention);
+            System.out.println("");
+            
+            //enter checker
+            Scanner plh = new Scanner(System.in);
+            System.out.print("Pilih Bank untuk pembayaran : ");
+            Pilih = plh.nextLine();
+            
+            if(Pilih.equals("")){
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                Pembayaran("Tolong masukan keyword!");
+            }else
+                if((Integer.valueOf(Pilih) - 1) < Id_list.size()){
+                    Kode_bank = Id_list.get((Integer.valueOf(Pilih) - 1));
+                }else   
+                    {
+                        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                        Pembayaran("Keyword yang anda masukan salah!");
+                    }
+            
+            System.out.println("");
+            
+            //inisialisasi no_rek dan atas nama dari kode_bank pada table rekening
+            stmt = conn.createStatement();
+            sql = "SELECT * FROM rekening WHERE Kode_bank = " +Kode_bank;
+            rs = stmt.executeQuery(sql);
+            
+            if(rs.next()){
+               No_rek    = rs.getString("No_rek");
+               Atas_nama = rs.getString("Atas_nama");
+               
+                System.out.println("No rek    = " +No_rek);
+                System.out.println("Atas Nama = " +Atas_nama);
+            }
+            
+            System.out.println("");
+            
+            //cari jumlah Id pembayaran pada tabel Pembayaran
+            stmt = conn.createStatement();
+            sql = "SELECT COUNT(*) FROM pembayaran";
+            rs = stmt.executeQuery(sql);
+            
+            //extract data from result set
+            if(rs.next()){
+                //retrieve column name                
+                Jmlh_Id_pay = rs.getInt("count(*)");
+                //ps.amount = Count + 1;
+                Jmlh_Id_pay = Jmlh_Id_pay + 1;
+                
+                //display value
+                System.out.println(Jmlh_Id_pay);
+            }
+            
+            System.out.println("");
+            
+            //isi table pembayaran
+            stmt = conn.createStatement();
+            sql = "INSERT INTO pembayaran " + "VALUE (" +Jmlh_Id_pay+ ", CURRENT_TIMESTAMP," +jmlh+ ", " +Count+ ", " +No_rek+ " )";
+            stmt.executeUpdate(sql);
+            
+            //tampil pembayaran
+            stmt = conn.createStatement();
+            sql = "SELECT * FROM pembayaran WHERE Id_pay = " +Jmlh_Id_pay;
+            stmt.executeQuery(sql);
             
     } catch (SQLException e)
         {
