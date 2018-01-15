@@ -120,12 +120,10 @@ public class Kategori {
                 Id_produk      = rs.getInt("Id_produk");
                 String Nama_produk = rs.getString("Nama_produk");
                 String Harga       = rs.getString("Harga");
-                //String Id_cate     = rs.getString("Id_cate");
                 
                 Id_list.add(Id_produk);
                 
                 //display value
-                //System.out.println("Id produk \t = " +Id_produk);
                 System.out.println("Index = " + index);
                 System.out.println("Nama Produk \t = " +Nama_produk);
                 System.out.println("Harga \t\t = " +Harga);
@@ -293,12 +291,10 @@ public class Kategori {
                 int Id_produk      = rs.getInt("Id_produk");
                 String Nama_produk = rs.getString("Nama_produk");
                 String Harga       = rs.getString("Harga");
-                //String Id_cate     = rs.getString("Id_cate");
                 
                 Id_list.add(Id_produk);
                 
                 //display value
-                //System.out.println("Id produk \t = " +Id_produk);
                 System.out.println("Index = " + index);
                 System.out.println("Nama Produk \t = " +Nama_produk);
                 System.out.println("Harga \t\t = " +Harga);
@@ -383,7 +379,6 @@ public class Kategori {
                 Id_list.add(Id_produk);
                 
                 //display value
-                //System.out.println("Id produk \t = " +Id_produk);
                 System.out.println("Index = " + index);
                 System.out.println("Nama Produk \t = " +Nama_produk);
                 System.out.println("Harga \t\t = " +Harga);
@@ -471,7 +466,6 @@ public class Kategori {
                 Id_list.add(Id_produk);
                 
                 //display value
-                //System.out.println("Id produk \t = " +Id_produk);
                 System.out.println("Index = " + index);
                 System.out.println("Nama Produk \t = " +Nama_produk);
                 System.out.println("Harga \t\t = " +Harga_produk);

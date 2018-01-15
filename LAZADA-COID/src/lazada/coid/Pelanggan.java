@@ -244,10 +244,7 @@ public class Pelanggan {
                 //retrieve column name
                 Id_Produk    = rs.getInt("Id_produk");
                 Nama_produk = rs.getString("Nama_produk");
-                Harga       = rs.getInt("Harga");
-                
-                //display value
-                
+                Harga       = rs.getInt("Harga");              
             }
             
             System.out.println("Id Pesanan     : " +Count);
@@ -257,31 +254,9 @@ public class Pelanggan {
             System.out.println("Nama Produk    : " +Nama_produk);
             System.out.println("Jumlah Barang  : " +jmlh);
             System.out.println("");
-            //System.out.println("Total Harga    : " +jmlh*Harga);
-            //System.out.println("");
              
-            //lanjutkan ke pembayaran
-            //new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            //lanjutkan ke pembayaran            
             Pembayaran("");
- 
-            /*
-            //enter checker
-            Scanner plh = new Scanner(System.in);
-            System.out.print("Apakah anda ingin belanja lagi? (y/n) : ");
-            Pilih = plh.nextLine();
-
-            System.out.println("");
-            
-            if(Pilih.equals("")){
-                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-                Jawaban();
-            }else
-                if(Pilih.equals("y")){
-                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-                    CariBarang("");
-                }else        
-                    conn.close();
-            */
             
     } catch (SQLException e)
         {
