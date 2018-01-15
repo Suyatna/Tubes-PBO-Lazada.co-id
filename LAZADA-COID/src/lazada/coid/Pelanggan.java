@@ -29,6 +29,7 @@ public class Pelanggan {
     public String password;
     public String id_pel;
     public String Nama_pel;
+    public int Jmlh_Id_pel;
             
     //repo untuk Id_produk agar bisa digunakan di class lain
     public int Count;
@@ -46,6 +47,11 @@ public class Pelanggan {
     //repo rekening
     public String No_rek;
     public String Atas_nama;
+    
+    //repo pengirim
+    public int Jmlh_Id_pengirim;
+    public String Id_pengirim;
+    public String No_kurir;
     
     public void Pembeli(String attention, int Id_pro) throws IOException, InterruptedException{
        
@@ -79,6 +85,16 @@ public class Pelanggan {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             Masuk("");
         }
+        else
+            if(Pilih.equals("2")){
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                Daftar("");
+            }
+            else{
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                String strTemp = "Tolong keyword yang anda masukan salah!";
+                Pembeli(strTemp, Id_pro);
+            }
     }
     
     public void CariBarang(String attention) throws IOException, InterruptedException{
@@ -170,7 +186,7 @@ public class Pelanggan {
                 id_pel          = rs.getString("Id_pel");
                 
                 System.out.println(id_pel);
-                
+                System.out.println("");
             }
             else
                 {
@@ -194,18 +210,21 @@ public class Pelanggan {
                 System.out.println(Count);
             }
             
+            System.out.println("");
+            
             //tanya berapa yang dibeli
             Scanner sc = new Scanner(System.in);
             System.out.print("Berapa jumlah yang akan dibeli?: ");
             jmlh = sc.nextInt();
             
+            System.out.println("");
             System.out.println(Count);
             System.out.println(id_pel);
             System.out.println(jmlh);
             System.out.println("");
             
             stmt = conn.createStatement();
-            sql = "INSERT INTO pesanan " + "VALUE (" +Count+", '" +id_pel+ "' ," +jmlh+ " , CURRENT_TIMESTAMP )";
+            sql = "INSERT INTO pesanan " + "VALUE (" +Count+", '" +id_pel+ "' ," +jmlh+ " , NOW() )";
             stmt.executeUpdate(sql);
             
             //update Id_pesanan pada tabel pesanan_produk_retail sesuai dengan Id_produk
@@ -274,7 +293,7 @@ public class Pelanggan {
         }
     }
     
-    public void Jawaban() throws IOException, InterruptedException{
+    public void Jawaban(String attention) throws IOException, InterruptedException{
         Connection conn = null;
         Statement stmt = null;
         
@@ -288,8 +307,9 @@ public class Pelanggan {
             //System.out.println("connecting to database...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
             
-            System.out.println("Tolong masukan keyword : ");
-        
+            System.out.println(attention);
+            System.out.println("");
+            
             //enter checker
             Scanner plh = new Scanner(System.in);
             System.out.print("Apakah anda ingin belanja lagi? (y/n) : ");
@@ -297,13 +317,19 @@ public class Pelanggan {
         
             if(Pilih.equals("")){
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-                Jawaban();
+                Jawaban("Tolong masukan keyword :");
             }else
                 if(Pilih.equals("y")){
                     new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
                     CariBarang("");
                 }else        
-                    conn.close();
+                    if(Pilih.equals("n")){
+                        conn.close();
+                    }else 
+                        {
+                            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                            Jawaban("Keyword yang anda masukan salah!");
+                        }
             
     } catch (SQLException e)
         {
@@ -404,13 +430,194 @@ public class Pelanggan {
             
             //isi table pembayaran
             stmt = conn.createStatement();
-            sql = "INSERT INTO pembayaran " + "VALUE (" +Jmlh_Id_pay+ ", CURRENT_TIMESTAMP," +jmlh+ ", " +Count+ ", " +No_rek+ " )";
+            sql = "INSERT INTO pembayaran " + "VALUE (" +Jmlh_Id_pay+ ", NOW()," +(jmlh * Harga) + ", " +Count+ ", " +No_rek+ " )";
             stmt.executeUpdate(sql);
             
             //tampil pembayaran
             stmt = conn.createStatement();
-            sql = "SELECT * FROM pembayaran WHERE Id_pay = " +Jmlh_Id_pay;
-            stmt.executeQuery(sql);
+            sql = "SELECT * FROM pembayaran WHERE No_pay = " +Jmlh_Id_pay;
+            rs = stmt.executeQuery(sql);
+            
+            if(rs.next()){
+                String No_pay    = rs.getString("No_pay");
+                String tgl_pay   = rs.getString("Tgl_pay");
+                int total_pay    = rs.getInt("Total_pay");
+                String id_pesan  = rs.getString("Id_pesan");
+                String no_rek    = rs.getString("No_rek");
+                
+                System.out.println("Id Pelanggan \t\t = " +No_pay);
+                System.out.println("Tanggal Pembayaran \t = " +tgl_pay);
+                System.out.println("Id Pesanan \t\t = " +id_pesan);
+                System.out.println("Nomor Rekening \t\t = " +no_rek);
+                System.out.println("");
+                System.out.println("Total Pembayaran \t = " +total_pay);
+            }
+            
+            System.out.println("");
+            
+            //cari jumlah Id_pengirim pada table pengirim
+            stmt = conn.createStatement();
+            sql = "SELECT COUNT(*) FROM pengiriman";
+            rs = stmt.executeQuery(sql);
+            
+            //extract data from result set
+            if(rs.next()){
+                //retrieve column name                
+                Jmlh_Id_pengirim = rs.getInt("count(*)");
+                //ps.amount = Count + 1;
+                Jmlh_Id_pengirim = Jmlh_Id_pengirim + 1;
+                
+                //display value
+                System.out.println(Jmlh_Id_pengirim);
+            }
+            
+            System.out.println("");
+            
+            //isi pengiriman
+            stmt = conn.createStatement();
+            sql = "INSERT INTO pengiriman " + "VALUE (" +Jmlh_Id_pengirim+ ", " +(Jmlh_Id_pengirim + 100)+ ", DATE_SUB(NOW(), INTERVAL -7 DAY), " +Jmlh_Id_pay+ " )";
+            stmt.executeUpdate(sql);
+            
+            //tampil pengiriman
+            stmt = conn.createStatement();
+            sql = "SELECT * FROM pengiriman WHERE No_pay = " +Jmlh_Id_pay;
+            rs = stmt.executeQuery(sql);
+            
+            if(rs.next()){
+                String Id_pengirim   = rs.getString("Id_pengirim");
+                String No_kurir      = rs.getString("No_kurir");
+                String Tgl_kirim     = rs.getString("Tgl_kirim");
+                String No_pay        = rs.getString("No_pay");
+                
+                System.out.println("Nomor Pembayaran \t = " +No_pay);
+                System.out.println("Tanggal Kirim    \t = " +Tgl_kirim);
+                System.out.println("Nomor Pemesanan \t = " +No_pay);
+                System.out.println("Nomor Kurir     \t = " +No_kurir);
+                System.out.println("");
+            }
+            
+            System.out.println("");
+            
+            //enter checker
+            Scanner plh2 = new Scanner(System.in);
+            System.out.print("Apakah anda ingin belanja lagi? (y/n) : ");
+            Pilih = plh2.nextLine();
+
+            System.out.println("");
+            
+            if(Pilih.equals("")){
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                Jawaban("Tolong masukan keyword : ");
+            }else
+                if(Pilih.equals("y")){
+                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    CariBarang("");
+                }else        
+                    if(Pilih.equals("2")){
+                        conn.close();
+                    }else
+                        {
+                            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                            Jawaban("Keyword yang anda masukan salah");
+                        }
+            
+    } catch (SQLException e)
+        {
+            System.out.println("Failed " + e.toString());
+        } 
+        catch(ClassNotFoundException e)
+        {
+                System.out.println("JDBC Driver not found");
+        }
+    }
+    
+    public void Daftar(String attention) throws IOException, InterruptedException{
+        Connection conn = null;
+        Statement stmt = null;
+        
+        String Pilih;
+        
+        String Nama;
+        String Nmr_telp;
+        String Alamat;
+        String Email;
+        String Password;
+        
+        try {
+            //register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            //open a connection
+            System.out.println("connecting to database...");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            
+            //execute a query
+            //System.out.println("creating statement...");
+            //System.out.println("please turn off your anti-virus...");
+            
+            Scanner nm = new Scanner(System.in);
+            System.out.print("Nama Lengkap = ");
+            Nama = nm.nextLine();
+            
+            Scanner em = new Scanner(System.in);
+            System.out.print("Email        = ");
+            Email = em.nextLine();
+            
+            Scanner pass = new Scanner(System.in);
+            System.out.print("Password     = ");
+            Password = pass.nextLine();
+            
+            Scanner alm = new Scanner(System.in);
+            System.out.print("Alamat       = ");
+            Alamat = alm.nextLine();
+            
+            Scanner nmr = new Scanner(System.in);
+            System.out.print("Nomor telp   = ");
+            Nmr_telp = nmr.nextLine();
+            
+            //cari jumlah Id_pel
+            stmt = conn.createStatement();
+            String sql;
+            sql = "SELECT COUNT(*) FROM pelanggan";
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            //extract data from result set
+            if(rs.next()){
+                //retrieve column name                
+                Jmlh_Id_pel = rs.getInt("count(*)");
+                //ps.amount = Count + 1;
+                Jmlh_Id_pel = Jmlh_Id_pel + 1;
+                
+                //display value
+                System.out.println(Jmlh_Id_pel);
+                System.out.println("");
+            }
+            
+            //cari email yang tidak sama
+            stmt = conn.createStatement();
+            sql = "SELECT * FROM pelanggan WHERE Email = '" +Email+ "' ";
+            rs = stmt.executeQuery(sql);
+                        
+            if(rs.next()){
+                Nama_pel        = rs.getString("Nama_pel");
+                String email_db = rs.getString("Email");
+                String pass_db  = rs.getString("Pass");                
+                id_pel          = rs.getString("Id_pel");
+                
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();   
+                Pembeli("Maaf Email sudah terdaftar!", Repo_IdProduk);
+            }
+            else
+                {
+                    //daftarkan email
+                    stmt = conn.createStatement();
+                    sql = "INSERT INTO pelanggan " +
+                            "VALUE (" +Jmlh_Id_pel+ ", '" +Nama+ "', '" +Nmr_telp+ "', '" +Alamat+ "', '" +Email+ "', '" +Password+ "')";
+                    stmt.executeUpdate(sql);
+                    
+                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();   
+                    Pembeli("Selamat anda sudah terdaftar", Repo_IdProduk);
+                } 
             
     } catch (SQLException e)
         {

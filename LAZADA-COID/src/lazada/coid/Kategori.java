@@ -71,7 +71,15 @@ public class Kategori {
                     if(Pilih.equals("3")){
                        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
                        memub();
-                    }
+                    }else 
+                        if(Pilih.equals("4")){
+                            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                            altjk();
+                         }else
+                            {
+                                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                                TampilKategori("Keyword yang anda masukan salah!");
+                            }
     }
     
     //kode jmkc  = Jam Tangan, Kacamata dan Pakaian
