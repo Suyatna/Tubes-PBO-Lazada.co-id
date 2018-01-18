@@ -39,8 +39,7 @@ public class TryTampil {
         //enter checker
         Scanner plh = new Scanner(System.in);       
         Pilih = plh.nextLine();
-        System.out.print("Pilih : ");       
-        
+                
         if(Pilih.equals("")){
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             String strTemp = "Tolong isi pilihannya";
@@ -52,10 +51,17 @@ public class TryTampil {
                     Pelanggan plg = new Pelanggan();
                     plg.CariBarang("");
                 }
-                else {
-                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-                    String strTemp = "Masukan salah!";
-                    TampilData(strTemp);
-                }
+                else
+                    if(Pilih.equals("2")){
+                        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                        retail rt = new retail();
+                        rt.Tampil("");
+                    }
+                    else
+                        {
+                            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                            String strTemp = "Masukan salah!";
+                            TampilData(strTemp);
+                        }
     }
 }

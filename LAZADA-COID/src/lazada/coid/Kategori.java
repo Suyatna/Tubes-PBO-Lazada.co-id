@@ -65,16 +65,16 @@ public class Kategori {
             else
                 if(Pilih.equals("2")){
                     new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-                    kolap();
+                    kolap("");
                 }
                 else
                     if(Pilih.equals("3")){
                        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-                       memub();
+                       memub("");
                     }else 
                         if(Pilih.equals("4")){
                             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-                            altjk();
+                            altjk("");
                          }else
                             {
                                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -88,6 +88,7 @@ public class Kategori {
         Statement stmt = null;
         
         String Pilih;
+        String Pilih2;
         
         try {
             //register JDBC driver
@@ -100,13 +101,49 @@ public class Kategori {
             //execute a query
             System.out.println("creating statement...");
             System.out.println("please turn off your anti-virus...");
+            System.out.println("");
+            
+            System.out.println("Pengurutan berdasarkan : ");
+            System.out.println("1. Harga Terbesar");
+            System.out.println("2. Harga Terkecil");
+            System.out.println("");
+            
+            System.out.println(attention);
+            System.out.println("");
+            
+            Scanner plh2 = new Scanner(System.in);
+            System.out.print("Pilih : ");
+            Pilih2 = plh2.nextLine();
             
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, produk.`Id_cate`, pesanan_produk_retail.`Id_pesan`\n" +
-                  "FROM produk\n" +
-                  "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
-                  "WHERE pesanan_produk_retail.`Id_pesan` IS NULL AND produk.`Id_cate` = 01;";
+            sql = "";
+            
+            if(Pilih2.equals("")){
+                conn.close();
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                jmkc("Masukan keyword");
+            }
+            else
+                if(Pilih2.equals("1")){
+                    sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, produk.`Id_cate`, pesanan_produk_retail.`Id_pesan`\n" +
+                          "FROM produk\n" +
+                          "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
+                          "WHERE pesanan_produk_retail.`Id_pesan` IS NULL AND produk.`Id_cate` = 01 ORDER BY produk.`Harga` DESC;";
+                }
+                else
+                    if(Pilih2.equals("2")){
+                        sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, produk.`Id_cate`, pesanan_produk_retail.`Id_pesan`\n" +
+                          "FROM produk\n" +
+                          "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
+                          "WHERE pesanan_produk_retail.`Id_pesan` IS NULL AND produk.`Id_cate` = 01 ORDER BY produk.`Harga` ASC;";
+                    }
+                    else
+                        {
+                            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                            jmkc("Keyword salah!");
+                        }
+                                    
             ResultSet rs = stmt.executeQuery(sql);
             
             //extract data from result set
@@ -168,11 +205,12 @@ public class Kategori {
     }
     
     //kode kolap = Komputer dan Laptop
-    public void kolap() throws IOException, InterruptedException{
+    public void kolap(String attention) throws IOException, InterruptedException{
         Connection conn = null;
         Statement stmt = null;
         
         String Pilih;
+        String Pilih2;
         
         try {
             //register JDBC driver
@@ -185,13 +223,50 @@ public class Kategori {
             //execute a query
             System.out.println("creating statement...");
             System.out.println("please turn off your anti-virus...");
+            System.out.println("");
+            
+            System.out.println("Pengurutan berdasarkan : ");
+            System.out.println("1. Harga Terbesar");
+            System.out.println("2. Harga Terkecil");
+            System.out.println("");
+            
+            System.out.println(attention);
+            System.out.println("");
+            
+            Scanner plh2 = new Scanner(System.in);
+            System.out.print("Pilih : ");
+            Pilih2 = plh2.nextLine();
             
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, produk.`Id_cate`, pesanan_produk_retail.`Id_pesan`\n" +
-                  "FROM produk\n" +
-                  "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
-                  "WHERE pesanan_produk_retail.`Id_pesan` IS NULL AND produk.`Id_cate` = 02;";
+            sql = "";
+            
+            if(Pilih2.equals("")){
+                conn.close();
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                jmkc("Masukan keyword");
+            }
+                else
+                    if(Pilih2.equals("1")){
+                        sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, produk.`Id_cate`, pesanan_produk_retail.`Id_pesan`\n" +
+                              "FROM produk\n" +
+                              "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
+                              "WHERE pesanan_produk_retail.`Id_pesan` IS NULL AND produk.`Id_cate` = 02 ORDER BY produk.`Harga` DESC;";
+                    }
+                        else
+                            if(Pilih2.equals("2")){
+                                sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, produk.`Id_cate`, pesanan_produk_retail.`Id_pesan`\n" +
+                                      "FROM produk\n" +
+                                      "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
+                                      "WHERE pesanan_produk_retail.`Id_pesan` IS NULL AND produk.`Id_cate` = 02 ORDER BY produk.`Harga` ASC;";
+                            }
+                            else
+                                {
+                                    conn.close();
+                                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                                    jmkc("Masukan keyword");
+                                }
+                
             ResultSet rs = stmt.executeQuery(sql);
             
             //extract data from result set
@@ -254,11 +329,12 @@ public class Kategori {
     }
     
     //kode memub = Media Musik dan Buku
-    public void memub() throws IOException, InterruptedException{
+    public void memub(String attention) throws IOException, InterruptedException{
         Connection conn = null;
         Statement stmt = null;
         
         String Pilih;
+        String Pilih2;
         
         try {
             //register JDBC driver
@@ -267,17 +343,55 @@ public class Kategori {
             //open a connection
             System.out.println("connecting to database...");
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-            
+                        
             //execute a query
             System.out.println("creating statement...");
             System.out.println("please turn off your anti-virus...");
+            System.out.println("");
+            
+            System.out.println("Pengurutan berdasarkan : ");
+            System.out.println("1. Harga Terbesar");
+            System.out.println("2. Harga Terkecil");
+            System.out.println("");
+            
+            System.out.println(attention);
+            System.out.println("");
+            
+            Scanner plh2 = new Scanner(System.in);
+            System.out.print("Pilih : ");
+            Pilih2 = plh2.nextLine();
             
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, produk.`Id_cate`, pesanan_produk_retail.`Id_pesan`\n" +
-                  "FROM produk\n" +
-                  "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
-                  "WHERE pesanan_produk_retail.`Id_pesan` IS NULL AND produk.`Id_cate` = 03;";
+            sql = "";
+            
+            if(Pilih2.equals("")){
+                conn.close();
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                memub("Masukan keyword");
+            }
+            else
+                if(Pilih2.equals("1")){
+                    sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, produk.`Id_cate`, pesanan_produk_retail.`Id_pesan`\n" +
+                          "FROM produk\n" +
+                          "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
+                          "WHERE pesanan_produk_retail.`Id_pesan` IS NULL AND produk.`Id_cate` = 03 ORDER BY produk.`Harga` DESC;";
+                }
+                else
+                    if(Pilih2.equals("2")){
+                        sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, produk.`Id_cate`, pesanan_produk_retail.`Id_pesan`\n" +
+                          "FROM produk\n" +
+                          "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
+                          "WHERE pesanan_produk_retail.`Id_pesan` IS NULL AND produk.`Id_cate` = 03 ORDER BY produk.`Harga` ASC;";
+                    }
+                    else
+                        {
+                            conn.close();
+                            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                            memub("Keyword salah!");
+                        }
+            
+            
             ResultSet rs = stmt.executeQuery(sql);
             
             //extract data from result set
@@ -337,11 +451,12 @@ public class Kategori {
         }
     }
     
-    public void altjk() throws IOException, InterruptedException{
+    public void altjk(String attention) throws IOException, InterruptedException{
         Connection conn = null;
         Statement stmt = null;
         
         String Pilih;
+        String Pilih2;
         
         try {
             //register JDBC driver
@@ -354,13 +469,51 @@ public class Kategori {
             //execute a query
             System.out.println("creating statement...");
             System.out.println("please turn off your anti-virus...");
+            System.out.println("");
+            
+             System.out.println("Pengurutan berdasarkan : ");
+            System.out.println("1. Harga Terbesar");
+            System.out.println("2. Harga Terkecil");
+            System.out.println("");
+            
+            System.out.println(attention);
+            System.out.println("");
+            
+            Scanner plh2 = new Scanner(System.in);
+            System.out.print("Pilih : ");
+            Pilih2 = plh2.nextLine();
             
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, produk.`Id_cate`, pesanan_produk_retail.`Id_pesan`\n" +
-                  "FROM produk\n" +
-                  "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
-                  "WHERE pesanan_produk_retail.`Id_pesan` IS NULL AND produk.`Id_cate` = 04;";
+            sql = "";
+            
+            if(Pilih2.equals("")){
+                conn.close();
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                altjk("Masukan keyword");
+            }
+            else
+                if(Pilih2.equals("1")){
+                    sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, produk.`Id_cate`, pesanan_produk_retail.`Id_pesan`\n" +
+                          "FROM produk\n" +
+                          "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
+                          "WHERE pesanan_produk_retail.`Id_pesan` IS NULL AND produk.`Id_cate` = 04 ORDER BY produk.`Harga` DESC;";
+                }
+                else
+                    if(Pilih2.equals("2")){
+                        sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, produk.`Id_cate`, pesanan_produk_retail.`Id_pesan`\n" +
+                              "FROM produk\n" +
+                              "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
+                              "WHERE pesanan_produk_retail.`Id_pesan` IS NULL AND produk.`Id_cate` = 04 ORDER BY produk.`Harga` ASC;";
+                    }
+                    else
+                        {
+                            conn.close();
+                            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                            altjk("Keyword salah!S");
+                        }
+            
+            
             ResultSet rs = stmt.executeQuery(sql);
             
             //extract data from result set
@@ -422,11 +575,12 @@ public class Kategori {
     }
     
     
-    public void SemuaProduk() throws IOException, InterruptedException{
+    public void SemuaProduk(String attention) throws IOException, InterruptedException{
         Connection conn = null;
         Statement stmt = null;
         
         String Pilih;
+        String Pilih2;
         
         try {
             //register JDBC driver
@@ -441,14 +595,48 @@ public class Kategori {
             System.out.println("please turn off your anti-virus...");
             System.out.println("");
             
+            System.out.println("Pengurutan berdasarkan : ");
+            System.out.println("1. Harga Terbesar");
+            System.out.println("2. Harga Terkecil");
+            System.out.println("");
+            
+            System.out.println(attention);
+            System.out.println("");
+            
+            Scanner plh2 = new Scanner(System.in);
+            System.out.print("Pilih : ");
+            Pilih2 = plh2.nextLine();
+            
             stmt = conn.createStatement();
             String sql;
-            sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, pesanan_produk_retail.`Id_pesan`\n" +
-                  "FROM produk\n" +
-                  "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
-                  "WHERE pesanan_produk_retail.`Id_pesan` IS NULL;";
-            ResultSet rs = stmt.executeQuery(sql);
+            sql = "";
             
+            if(Pilih2.equals("")){
+                conn.close();
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                SemuaProduk("Masukan Keyword");
+            }
+            else
+                if(Pilih2.equals("1")){
+                    sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, pesanan_produk_retail.`Id_pesan`\n" +
+                          "FROM produk\n" +
+                          "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
+                          "WHERE pesanan_produk_retail.`Id_pesan` IS NULL ORDER BY produk.`Harga` DESC;";        
+                }
+                else
+                    if(Pilih2.equals("2")){
+                        sql = "SELECT produk.`Id_produk`, produk.`Nama_produk`, produk.`Harga`, pesanan_produk_retail.`Id_pesan`\n" +
+                          "FROM produk\n" +
+                          "INNER JOIN pesanan_produk_retail on produk.`Id_produk` = pesanan_produk_retail.`Id_produk`\n" +
+                          "WHERE pesanan_produk_retail.`Id_pesan` IS NULL ORDER BY produk.`Harga` ASC;";                                                
+                    }
+                    else
+                    {
+                        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                        SemuaProduk("Keyword yang anda masukan salah!");
+                    }
+            
+            ResultSet rs = stmt.executeQuery(sql);
             System.out.println("");
             
             //extract data from result set

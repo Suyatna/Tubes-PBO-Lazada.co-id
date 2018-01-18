@@ -102,7 +102,7 @@ public class Pelanggan {
         
         System.out.println("Cari Barang : ");
         System.out.println("1. Kategori");
-        System.out.println("2. Rekomendasi");
+        System.out.println("2. Semua Produk");
         System.out.println("0. Kembali");
         System.out.println("");
         
@@ -132,7 +132,7 @@ public class Pelanggan {
                 if(Pilih.equals("2")){
                     new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
                     Kategori ktg = new Kategori();
-                    ktg.SemuaProduk();
+                    ktg.SemuaProduk("");
                 }
                 else 
                     if(Pilih.equals("0")){
@@ -158,6 +158,7 @@ public class Pelanggan {
         Produk pr = new Produk();
         
         String Pilih;
+        String Pilih2;
         
         try {
             //register JDBC driver
@@ -224,7 +225,7 @@ public class Pelanggan {
             System.out.println("");
             
             stmt = conn.createStatement();
-            sql = "INSERT INTO pesanan " + "VALUE (" +Count+", '" +id_pel+ "' ," +jmlh+ " , NOW() )";
+            sql = "INSERT INTO pesanan " + "VALUES (" +Count+", '" +id_pel+ "' ," +jmlh+ " , NOW() )";
             stmt.executeUpdate(sql);
             
             //update Id_pesanan pada tabel pesanan_produk_retail sesuai dengan Id_produk
@@ -232,7 +233,7 @@ public class Pelanggan {
             sql = "UPDATE pesanan_produk_retail " +
                     "SET Id_pesan = " +Count+ " WHERE Id_produk = " +Repo_IdProduk;
             stmt.executeUpdate(sql);
-            
+                        
             //check id produk
             stmt = conn.createStatement();
             sql = "SELECT * FROM produk WHERE Id_produk = " + Repo_IdProduk;
@@ -255,8 +256,34 @@ public class Pelanggan {
             System.out.println("Jumlah Barang  : " +jmlh);
             System.out.println("");
              
-            //lanjutkan ke pembayaran            
-            Pembayaran("");
+            
+            System.out.println("Apakah anda ingin belanja lagi? (y/n)");
+            Scanner sc2 = new Scanner(System.in);
+            System.out.print("Pilih : ");
+            Pilih2 = sc2.nextLine();
+            
+            if(Pilih2.equals("")){
+                conn.close();
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                Jawaban("Masukan keyword");
+            }
+            else
+                if(Pilih2.equals("y")){
+                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    CariBarang("");
+                }
+                else
+                    if(Pilih2.equals("n")){
+                        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                        Pembayaran("");
+                    }
+                    else
+                        {
+                            conn.close();
+                            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                            Jawaban("Keyword yang anda masukan salah");
+                        }
+            
             
     } catch (SQLException e)
         {
@@ -299,7 +326,9 @@ public class Pelanggan {
                     CariBarang("");
                 }else        
                     if(Pilih.equals("n")){
-                        conn.close();
+                        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                        TryTampil ty = new TryTampil();
+                        ty.TampilData("");
                     }else 
                         {
                             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -405,7 +434,7 @@ public class Pelanggan {
             
             //isi table pembayaran
             stmt = conn.createStatement();
-            sql = "INSERT INTO pembayaran " + "VALUE (" +Jmlh_Id_pay+ ", NOW()," +(jmlh * Harga) + ", " +Count+ ", " +No_rek+ " )";
+            sql = "INSERT INTO pembayaran " + "VALUES (" +Jmlh_Id_pay+ ", NOW()," +(jmlh * Harga) + ", " +Count+ ", " +No_rek+ " )";
             stmt.executeUpdate(sql);
             
             //tampil pembayaran
@@ -439,7 +468,7 @@ public class Pelanggan {
             if(rs.next()){
                 //retrieve column name                
                 Jmlh_Id_pengirim = rs.getInt("count(*)");
-                //ps.amount = Count + 1;
+                
                 Jmlh_Id_pengirim = Jmlh_Id_pengirim + 1;
                 
                 //display value
@@ -450,7 +479,7 @@ public class Pelanggan {
             
             //isi pengiriman
             stmt = conn.createStatement();
-            sql = "INSERT INTO pengiriman " + "VALUE (" +Jmlh_Id_pengirim+ ", " +(Jmlh_Id_pengirim + 100)+ ", DATE_SUB(NOW(), INTERVAL -7 DAY), " +Jmlh_Id_pay+ " )";
+            sql = "INSERT INTO pengiriman " + "VALUES (" +Jmlh_Id_pengirim+ ", JNE, " +(Jmlh_Id_pengirim + 100)+ ", DATE_SUB(NOW(), INTERVAL -7 DAY), " +Jmlh_Id_pay+ " )";
             stmt.executeUpdate(sql);
             
             //tampil pengiriman
@@ -463,11 +492,13 @@ public class Pelanggan {
                 String No_kurir      = rs.getString("No_kurir");
                 String Tgl_kirim     = rs.getString("Tgl_kirim");
                 String No_pay        = rs.getString("No_pay");
+                String Nama_kurir    = rs.getString("Nama_kurir");
                 
                 System.out.println("Nomor Pembayaran \t = " +No_pay);
                 System.out.println("Tanggal Kirim    \t = " +Tgl_kirim);
                 System.out.println("Nomor Pemesanan \t = " +No_pay);
                 System.out.println("Nomor Kurir     \t = " +No_kurir);
+                System.out.println("Nama Kurur      \t = " +Nama_kurir);
                 System.out.println("");
             }
             
@@ -489,7 +520,9 @@ public class Pelanggan {
                     CariBarang("");
                 }else        
                     if(Pilih.equals("2")){
-                        conn.close();
+                        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                        TryTampil ty = new TryTampil();
+                        ty.TampilData("");
                     }else
                         {
                             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -587,7 +620,7 @@ public class Pelanggan {
                     //daftarkan email
                     stmt = conn.createStatement();
                     sql = "INSERT INTO pelanggan " +
-                            "VALUE (" +Jmlh_Id_pel+ ", '" +Nama+ "', '" +Nmr_telp+ "', '" +Alamat+ "', '" +Email+ "', '" +Password+ "')";
+                            "VALUES (" +Jmlh_Id_pel+ ", '" +Nama+ "', '" +Nmr_telp+ "', '" +Alamat+ "', '" +Email+ "', '" +Password+ "')";
                     stmt.executeUpdate(sql);
                     
                     new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();   

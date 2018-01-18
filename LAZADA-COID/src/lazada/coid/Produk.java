@@ -95,7 +95,8 @@ public class Produk {
                 if(Pilih.equals("beli")){                   
                     //conn.close();
                     new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-                    Beli("");
+                    Pelanggan pl = new  Pelanggan();
+                    pl.Pembeli("", repo_IdPro);
                 }
                 else
                     {
@@ -111,11 +112,5 @@ public class Produk {
         {
                 System.out.println("JDBC Driver not found");
         }
-    }
-    
-    public void Beli(String attention) throws IOException, InterruptedException{
-        Pelanggan pl = new  Pelanggan();
-        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        pl.Pembeli("", repo_IdPro);         
     }
 }
