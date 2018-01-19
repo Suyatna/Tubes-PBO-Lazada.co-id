@@ -54,7 +54,7 @@ public class retail {
         
         System.out.println("Retail : ");
         System.out.println("1. Masuk");
-        System.out.println("2. Login");
+        System.out.println("2. Daftar");
         System.out.println("");
         
         System.out.println(attention);
@@ -204,6 +204,7 @@ public class retail {
             else
                 if(Pilih.equals("2")){
                     new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    Lihat_produk_pesan("");
                 }
                 else
                     if(Pilih.equals("0")){
@@ -249,6 +250,8 @@ public class retail {
             System.out.print("Harga        \t: ");
             Harga_in = sc2.nextInt();
             
+            System.out.println("");
+            
             //tampil kategori
             stmt = conn.createStatement();
             String sql;
@@ -289,7 +292,9 @@ public class retail {
                     System.out.println("");
                 }
             
-            //lihat jumlah produk + 7000
+            System.out.println("");
+            
+            //lihat jumlah produk + 7001
             stmt = conn.createStatement();
             sql = "SELECT COUNT(*) FROM produk";
             rs = stmt.executeQuery(sql);
@@ -299,7 +304,7 @@ public class retail {
                 //retrieve column name                
                 Jmlh_Id_produk = rs.getInt("count(*)");
                 
-                Jmlh_Id_produk = Jmlh_Id_produk + 7000;
+                Jmlh_Id_produk = Jmlh_Id_produk + 7001;
                 
                 //display value
                 System.out.println(Jmlh_Id_produk);
@@ -309,7 +314,7 @@ public class retail {
             //simpan data ke table produk
             stmt = conn.createStatement();
             sql = "INSERT INTO produk " +
-                    "VALUES ('" +Jmlh_Id_produk+ "', '" +Nama_produk_in+ "', " +Harga_in+ ", " +Id_kategori+ ")";
+                    "VALUES ('" +Jmlh_Id_produk+ "', '" +Nama_produk_in+ "', " +Harga_in+ ", '" +Id_kategori+ "')";
             stmt.executeUpdate(sql);
             
             //simpan data ke table produk_retail
@@ -366,24 +371,33 @@ public class retail {
             
             ResultSet rs = stmt.executeQuery(sql);
             
-            while(rs.next()){
-                String Id_produk_out   = rs.getString("Id_produk");
-                String Nama_produk_out = rs.getString("Nama_produk");
-                int Harga_out          = rs.getInt("Harga");
-                String Id_pesan_out    = rs.getString("Id_pesan");
-                String Id_retail_out   = rs.getString("Id_retail");
+            if(rs.next()){                
+                while(rs.next()){
+                    String Id_produk_out   = rs.getString("Id_produk");
+                    String Nama_produk_out = rs.getString("Nama_produk");
+                    int Harga_out          = rs.getInt("Harga");
+                    String Id_pesan_out    = rs.getString("Id_pesan");
+                    String Id_retail_out   = rs.getString("Id_retail");
                 
-                System.out.println("Id Produk   \t : " +Id_produk_out);
-                System.out.println("Nama Produk \t : " +Nama_produk_out);
-                System.out.println("Harga       \t : " +Harga_out);
-                System.out.println("Id Pesanan  \t : " +Id_pesan_out);
-                System.out.println("Id Retail   \t : " +Id_retail_out);
-                System.out.println("");
+                    System.out.println("Id Produk   \t : " +Id_produk_out);
+                    System.out.println("Nama Produk \t : " +Nama_produk_out);
+                    System.out.println("Harga       \t : " +Harga_out);
+                    System.out.println("Id Pesanan  \t : " +Id_pesan_out);
+                    System.out.println("Id Retail   \t : " +Id_retail_out);
+                    System.out.println("");
+                }
             }
+            else
+                {
+                    System.out.println("");
+                    System.out.println("Produk belum dipesan");
+                    System.out.println("");
+                }
             
             Scanner sc = new Scanner(System.in);
             System.out.println("Tekan Enter untuk kembali...");
             Pilih = sc.nextLine();
+            System.out.println("");
             
             if(Pilih.equals("")){
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -444,6 +458,8 @@ public class retail {
             System.out.print("Nomor telp   = ");
             Nmr_telp = nmr.nextLine();
             
+            System.out.println("");
+            
             //cari jumlah Id_retail
             stmt = conn.createStatement();
             String sql;
@@ -455,7 +471,7 @@ public class retail {
                 //retrieve column name                
                 Jmlh_Id_retail = rs.getInt("count(*)");
                 //ps.amount = Count + 1;
-                Jmlh_Id_retail = Jmlh_Id_retail + 10000;
+                Jmlh_Id_retail = Jmlh_Id_retail + 10001;
                 
                 //display value
                 System.out.println(Jmlh_Id_retail);
@@ -480,8 +496,8 @@ public class retail {
                 {
                     //daftarkan email
                     stmt = conn.createStatement();
-                    sql = "INSERT INTO pelanggan " +
-                            "VALUES (" +Jmlh_Id_retail+ ", '" +Nama+ "', '" +Nmr_telp+ "', '" +Alamat+ "', '" +Email+ "', '" +Password+ "')";
+                    sql = "INSERT INTO retail " +
+                            "VALUES (" +Jmlh_Id_retail+ ", '" +Nama+ "', '" +Email+ "', '" +Password+ "', '" +Alamat+ "', '" +Nmr_telp+ "')";
                     stmt.executeUpdate(sql);
                     
                     new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();   
