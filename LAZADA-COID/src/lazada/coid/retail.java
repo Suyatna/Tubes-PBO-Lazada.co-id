@@ -325,6 +325,8 @@ public class retail {
             stmt.executeUpdate(sql);
             
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            //clear linked list
+            Id_list.clear();
             Detail_retail("Data sudah ditambahkan");
             
     } catch (SQLException e)

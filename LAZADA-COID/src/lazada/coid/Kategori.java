@@ -184,9 +184,11 @@ public class Kategori {
             }else
                 if ((Integer.valueOf(Pilih) - 1) < Id_list.size()){
                     conn.close();
-                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();                                    
                     Produk prd = new Produk();
                     prd.TampilProduk(Id_list.get(Integer.valueOf(Pilih) - 1), "");
+                    //clear list
+                    Id_list.clear();
                 }
                 else 
                 {
@@ -308,9 +310,11 @@ public class Kategori {
             }else
                 if ((Integer.valueOf(Pilih) - 1) < Id_list.size()){
                     conn.close();
-                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();                                       
                     Produk prd = new Produk();
                     prd.TampilProduk(Id_list.get(Integer.valueOf(Pilih) - 1), "");
+                    //clear list
+                    Id_list.clear();
                 }
                 else 
                 {
@@ -431,9 +435,11 @@ public class Kategori {
             }else
                 if ((Integer.valueOf(Pilih) - 1) < Id_list.size()){
                     conn.close();
-                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();                                        
                     Produk prd = new Produk();
                     prd.TampilProduk(Id_list.get(Integer.valueOf(Pilih) - 1), "");
+                    //clear list
+                    Id_list.clear();
                 }
                 else 
                 {
@@ -554,9 +560,11 @@ public class Kategori {
             }else
                 if ((Integer.valueOf(Pilih) - 1) < Id_list.size()){
                     conn.close();
-                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();                                        
                     Produk prd = new Produk();
                     prd.TampilProduk(Id_list.get(Integer.valueOf(Pilih) - 1), "");
+                    //clear list
+                    Id_list.clear();
                 }
                 else 
                 {
@@ -678,9 +686,11 @@ public class Kategori {
             else
                 if ((Integer.valueOf(Pilih) - 1) < Id_list.size()){
                     conn.close();
-                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();                                        
                     Produk prd = new Produk();
                     prd.TampilProduk(Id_list.get(Integer.valueOf(Pilih) - 1), "");
+                    //clear linked list
+                    Id_list.clear();
                 }
                 else 
                 {

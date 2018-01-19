@@ -517,10 +517,14 @@ public class Pelanggan {
             }else
                 if(Pilih.equals("y")){
                     new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                    //clear linked list
+                    Id_list.clear();
                     CariBarang("");
                 }else        
-                    if(Pilih.equals("2")){
+                    if(Pilih.equals("n")){
                         new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+                        //clear linked list
+                        Id_list.clear();
                         TryTampil ty = new TryTampil();
                         ty.TampilData("");
                     }else
